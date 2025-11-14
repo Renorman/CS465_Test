@@ -1,13 +1,20 @@
 package com.example.uiuctempapp;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.uiuctempapp.databinding.ActivityMapsBinding;
@@ -43,9 +50,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng everittLocation = new LatLng(40.11109710774847, -88.22834223068678);
+
+
+        mMap.addMarker(new MarkerOptions().position(everittLocation).title("Current Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(everittLocation));
+
+        LatLng rm251 = new LatLng(40.110847718164734, -88.22820994436154);
+        LatLng rm234 = new LatLng(40.11104522745379, -88.22860126665434);
+        LatLng rm260 = new LatLng(40.1107226574013, -88.22793590598356);
+
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(rm251)
+                        .title("Room 251")
+                        .snippet("90 Degrees")
+                        .alpha(0.7f)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(rm234)
+                        .title("Room 234")
+                        .snippet("50 Degrees")
+                        .alpha(0.7f)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(rm260)
+                        .title("Room 260")
+                        .snippet("70 Degrees")
+                        .alpha(0.7f)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
     }
+
 }
