@@ -19,7 +19,6 @@
             android:layout_weight="1"
             android:hint="Search..."
             android:padding="12dp"
-            android:background="@drawable/search_background" />
 
         <ImageView
             android:id="@+id/locationButton"
@@ -27,7 +26,6 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:src="@android:drawable/ic_menu_mylocation"
-            android:background="@drawable/circle_background" />
 
     </LinearLayout>
 
