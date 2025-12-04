@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+// import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -26,6 +27,9 @@ public class HomeActivity extends AppCompatActivity {
                 Intent mapIntent = new Intent(HomeActivity.this, MapsActivity.class);
                 startActivity(mapIntent);
             }
+
+
+
         });
 //
 //        scoreButton.setOnClickListener(v ->
