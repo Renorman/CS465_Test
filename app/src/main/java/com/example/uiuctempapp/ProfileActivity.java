@@ -5,6 +5,8 @@ package com.example.uiuctempapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.content.Intent;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -12,6 +14,18 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ImageButton backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+            startActivity(intent);
+        });
+
+
+
+
     }
-}
+    }
+
 
