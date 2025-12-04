@@ -44,7 +44,8 @@
 
                 <ImageView
                     android:layout_width="40dp"
-                    android:layout_height="40dp"/>
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_places" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -63,7 +64,8 @@
 
                 <ImageView
                     android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_schedule" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,7 +84,8 @@
 
                 <ImageView
                     android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_notifications" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -101,7 +104,8 @@
 
                 <ImageView
                     android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_settings" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,12 +121,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/profile_card_bg"
             android:padding="20dp"
             android:layout_marginTop="30dp">
 
             <ImageView
                 android:layout_width="60dp"
-                android:layout_height="60dp"/>
+                android:layout_height="60dp"
+                android:src="@drawable/ic_profile_avatar" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -148,7 +154,8 @@
             <!-- Edit Arrow -->
             <ImageView
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@drawable/ic_arrow_right" />
 
         </LinearLayout>
 
