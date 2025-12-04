@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -65,11 +66,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // Setting up UI Elements
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+
+
         LatLng everittLocation = new LatLng(40.11109710774847, -88.22834223068678);
 
 
         mMap.addMarker(new MarkerOptions().position(everittLocation).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(everittLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(everittLocation, 20));
 
         LatLng rm251 = new LatLng(40.110847718164734, -88.22820994436154);
         LatLng rm234 = new LatLng(40.11104522745379, -88.22860126665434);
