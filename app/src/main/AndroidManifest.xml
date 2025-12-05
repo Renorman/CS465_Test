@@ -50,12 +50,12 @@
             </intent-filter>
         </activity>
 
-        <!-- ⭐ ADDED FOR SCHEDULE SCREEN ⭐ -->
+
         <activity
             android:name=".ScheduleActivity"
             android:exported="true" /> <!-- ADDED -->
 
-        <!-- ⭐ ADDED FOR ADD NEW CLASS SCREEN ⭐ -->
+
         <activity
             android:name=".AddClassActivity"
             android:exported="true" /> <!-- ADDED -->

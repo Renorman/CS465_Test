@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 public class ScheduleActivity extends AppCompatActivity {
-
+    private static final int ADD_CLASS_REQUEST = 1;
     RecyclerView recyclerView;
     ScheduleAdapter adapter;
     ArrayList<ClassItem> classList;
@@ -56,8 +56,25 @@ public class ScheduleActivity extends AppCompatActivity {
         // "+" button → Add new class
         findViewById(R.id.addClassButton).setOnClickListener(v -> {
             Intent intent = new Intent(ScheduleActivity.this, AddClassActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ADD_CLASS_REQUEST);
         });
+
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_CLASS_REQUEST && resultCode == RESULT_OK && data != null) {
+            String title = data.getStringExtra("CLASS_TITLE");
+            String time = data.getStringExtra("CLASS_TIME");
+            String location = data.getStringExtra("CLASS_LOCATION");
+
+            if (title != null && time != null && location != null) {
+                classList.add(new ClassItem(title, time, location));
+                adapter.notifyItemInserted(classList.size() - 1);
+            }
+        }
+    }
+
 }
 
