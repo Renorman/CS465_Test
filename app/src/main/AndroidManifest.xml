@@ -12,17 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UIUCTempApp">
 
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
@@ -33,27 +22,23 @@
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <activity
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity"
+
+        <activity
+            android:name=".ProfileActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
 
@@ -62,12 +47,18 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
 
+        <!-- ⭐ ADDED FOR SCHEDULE SCREEN ⭐ -->
+        <activity
+            android:name=".ScheduleActivity"
+            android:exported="true" /> <!-- ADDED -->
 
+        <!-- ⭐ ADDED FOR ADD NEW CLASS SCREEN ⭐ -->
+        <activity
+            android:name=".AddClassActivity"
+            android:exported="true" /> <!-- ADDED -->
 
     </application>
 </manifest>
