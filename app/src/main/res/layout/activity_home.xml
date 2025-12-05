@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Interface Design (LAB)"
+                android:text="Everitt Laboratory"
                 android:textSize="18sp"
                 android:textColor="#666666"
                 android:layout_marginBottom="16dp" />
