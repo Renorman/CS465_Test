@@ -1,5 +1,6 @@
 package com.example.uiuctempapp;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -7,12 +8,14 @@ import androidx.fragment.app.FragmentActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,9 +24,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.IndoorBuilding;
+import com.google.android.gms.maps.model.IndoorLevel;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.uiuctempapp.databinding.ActivityMapsBinding;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -70,39 +81,176 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
+        // Establish all existing locations & markers
+        List<Map<LatLng, String>> graingerRooms = getGraingerRooms();
+        List<List<Marker>> graingerMarkers = makeMarkers(graingerRooms, 70);
 
 
-        LatLng everittLocation = new LatLng(40.11109710774847, -88.22834223068678);
+        //Set Listener Events
+
+        // Indoor-based listening events
+        mMap.setOnIndoorStateChangeListener(new GoogleMap.OnIndoorStateChangeListener() {
+            int currLevel = -1; // Essentially setting it to NULL
+
+            // When a new building is in focus, update currLevel and show relevant markers
+            @Override
+            public void onIndoorBuildingFocused() {
+                IndoorBuilding currBuilding = mMap.getFocusedBuilding();
+                if (currBuilding != null) {
+                    currLevel = currBuilding.getActiveLevelIndex();
+
+                    showMarkers(graingerMarkers.get(currLevel));
+                }
+
+            }
+
+            // When a new floor is clicked, hide all markers from previous floor, and show new markers
+            @Override
+            public void onIndoorLevelActivated(@NonNull IndoorBuilding currBuilding) {
+                if (currLevel != -1) {
+                    hideMarkers(graingerMarkers.get(currLevel));
+                    currLevel = currBuilding.getActiveLevelIndex();
+                    showMarkers(graingerMarkers.get(currLevel));
+                }
+            }
+        });
 
 
-        mMap.addMarker(new MarkerOptions().position(everittLocation).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(everittLocation, 20));
+        LatLng graingerLocation = new LatLng(40.11233883459755, -88.22689025040142);
 
-        LatLng rm251 = new LatLng(40.110847718164734, -88.22820994436154);
-        LatLng rm234 = new LatLng(40.11104522745379, -88.22860126665434);
-        LatLng rm260 = new LatLng(40.1107226574013, -88.22793590598356);
 
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(rm251)
-                        .title("Room 251")
-                        .snippet("90 Degrees")
-                        .alpha(0.7f)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(rm234)
-                        .title("Room 234")
-                        .snippet("50 Degrees")
-                        .alpha(0.7f)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(rm260)
-                        .title("Room 260")
-                        .snippet("70 Degrees")
-                        .alpha(0.7f)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        mMap.addMarker(new MarkerOptions().position(graingerLocation).title("Current Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(graingerLocation, 20));
+
+    }
+
+    // Returns a List of lists for all Markers organized by each floor of the building
+    public List<List<Marker>> makeMarkers(List<Map<LatLng, String>> allFloors, int defaultTemp) {
+        // Final list to be returned
+        List<List<Marker>> allMarkers = new ArrayList<>();
+
+        // Iterate through each map/floor in the list of all floors
+        for (Map<LatLng, String> floor : allFloors) {
+            // List containing all markers on this floor
+            List<Marker> floorMarkers = new ArrayList<>();
+            // Iterate through each room (coordinates, name) in each floor's map of rooms
+            for (Map.Entry<LatLng, String> room : floor.entrySet()) {
+                // Find a random temperature between -10 - 110 degrees
+                int randomTemp = -10 + (int) (Math.random() * ((110 - (-10)) + 1));
+
+
+                Marker currMarker = mMap.addMarker(
+                        new MarkerOptions()
+                        .position(room.getKey())
+                        .title(room.getValue())
+                        .snippet(randomTemp + " degrees")
+                );
+
+                currMarker.setTag(randomTemp); // save for heatmap
+                currMarker.setVisible(false); // hide on initialization
+
+                // Set icon image based on room's randomly generated temperature
+                if (randomTemp > (defaultTemp + 10)) {
+                    currMarker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.hot_reaction)));
+                } else if (randomTemp < (defaultTemp - 10)) {
+                    currMarker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.cold_reaction)));
+                } else {
+                    currMarker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.neutral_reaction)));
+                }
+
+                floorMarkers.add(currMarker);
+            }
+            allMarkers.add(floorMarkers);
+        }
+        return allMarkers;
+    }
+
+
+    // Goes through Marker List and sets all to not visible
+    public void hideMarkers(List<Marker> markers) {
+        for (Marker marker : markers) {
+            marker.setVisible(false);
+        }
+    }
+
+    // Goes through Marker List and sets all to visible
+    public void showMarkers(List<Marker> markers) {
+        for (Marker marker : markers) {
+            marker.setVisible(true);
+        }
+    }
+
+    // Returns a scaled Bitmap of image id
+    public Bitmap getBitMap(int id) {
+        Bitmap initialBitmap = BitmapFactory.decodeResource(getResources(), id);
+        // Make bitmap the size of a coordinate marker
+        return Bitmap.createScaledBitmap(initialBitmap, 100, 100, false);
+    }
+
+    // Returns a List of all the Rooms (coordinates, name) for each floors in Grainger
+    public List<Map<LatLng, String>> getGraingerRooms() {
+
+        // Grainger's Basement Floor
+        Map<LatLng, String> floorB1 = Map.of(
+                new LatLng(40.11245281180666, -88.22729657085846), "CBTF Grainger - 057",
+                new LatLng(40.11243574394597, -88.22692674123637),"Microforms",
+                new LatLng(40.112413799547376, -88.22664458674019), "Engineering Documents",
+                new LatLng(40.112511330153616, -88.22655691161425), "EWS IT Helpdesk",
+                new LatLng(40.11241252187332, -88.22633188907322), "EWS Computer Lab"
+                );
+        // Grainger's First Floor
+        Map<LatLng, String> floor1 = Map.of(
+                new LatLng(40.11252104703671, -88.2270424028703), "Food Area",
+                new LatLng(40.112550370874764, -88.22675708719282), "Espresso Royale Cafe- Grainger Engineering Library",
+                new LatLng(40.112455499587114, -88.22679758968717), "Mathematics Library",
+                new LatLng(40.11243601220192, -88.22708458605916), "Circulation Desk",
+                new LatLng(40.1124483200248, -88.22701484862297), "Reference Desk",
+                new LatLng(40.112477038269496, -88.227207967677), "New Books",
+                new LatLng(40.11233960084567, -88.22728843394954), "New Periodicals",
+                new LatLng(40.112460627845444, -88.22646767796985), " "
+                );
+
+        // Grainger's Second Floor
+        Map<LatLng, String> floor2 = Map.of(
+                new LatLng(40.11242471900297, -88.22686456932834), " ",
+                new LatLng(40.11240520359445, -88.2272792306048), " ",
+                new LatLng(40.11241130216022, -88.22645309775403), " ",
+                new LatLng(40.112528394516836, -88.227057546307), "Room 229",
+                new LatLng(40.11255034931127, -88.2269841831581), "Room 231"
+                );
+
+        // Grainger's Third Floor
+        Map<LatLng, String> floor3 = Map.of(
+                new LatLng(40.112428378141445, -88.22686935388154), " ",
+                new LatLng(40.11239910502814, -88.22720746230695), " ",
+                new LatLng(40.112408862733986, -88.22654081456251), " ",
+                new LatLng(40.11252961422783, -88.22704319264743), " "
+        );
+
+        // Grainger's Fourth Floor
+        Map<LatLng, String> floor4 = Map.of(
+                new LatLng(40.11244680623018, -88.22685853520127), " ",
+                new LatLng(40.112426071115166, -88.22640081294611), " ",
+                new LatLng(40.112449245655064, -88.22729392954155), " ",
+                new LatLng(40.11248339759419, -88.2271870745203), "Room 404",
+                new LatLng(40.112284584279344, -88.22719026422243), "Room 414",
+                new LatLng(40.11227360684012, -88.22741194852024), "Room 415",
+                new LatLng(40.112523648071836, -88.22743746613723), "Room 403",
+                new LatLng(40.11241265427269, -88.22739281030748), "Room 407",
+                new LatLng(40.112421192263675, -88.22715836720117), "Room 408",
+                new LatLng(40.11255536055261, -88.22699728724379), "Room 429"
+                );
+
+        // Create a List of each floor's map
+        List<Map<LatLng, String>> allFloors =  new ArrayList<>() {{
+            // Insert highest-floor to lowest floor
+            add(floor4);
+            add(floor3);
+            add(floor2);
+            add(floor1);
+            add(floorB1);
+        }};
+        return allFloors;
     }
 
 }
