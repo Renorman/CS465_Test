@@ -26,11 +26,9 @@ public class AddClassActivity extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.cancelButton);
         Button saveButton = findViewById(R.id.saveButton);
 
-        // Back and Cancel both just close the screen
         backButton.setOnClickListener(v -> finish());
         cancelButton.setOnClickListener(v -> finish());
 
-        // Save new class
         saveButton.setOnClickListener(v -> {
             String title = editClassName.getText().toString().trim();
             String time = editClassTime.getText().toString().trim();
@@ -41,7 +39,6 @@ public class AddClassActivity extends AppCompatActivity {
                 return;
             }
 
-            // Pack data to send back to ScheduleActivity
             Intent result = new Intent();
             result.putExtra("CLASS_TITLE", title);
             result.putExtra("CLASS_TIME", time);
@@ -52,4 +49,3 @@ public class AddClassActivity extends AppCompatActivity {
         });
     }
 }
-

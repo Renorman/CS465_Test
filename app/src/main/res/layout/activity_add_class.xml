@@ -5,11 +5,10 @@
     android:padding="20dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <!-- Back / Cancel -->
         <ImageButton
             android:id="@+id/backButtonAddClass"
             android:layout_width="40dp"
@@ -17,36 +16,31 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_back" />
 
-        <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Class"
-            android:textSize="28sp"
             android:textStyle="bold"
+            android:textSize="28sp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp" />
 
-        <!-- Class Name -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Class Name"
-            android:textSize="16sp" />
+            android:text="Class Name" />
 
         <EditText
             android:id="@+id/editClassName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g., User Interface Design (LEC)"
+            android:hint="e.g., CS 465 Lecture"
             android:layout_marginBottom="16dp" />
 
-        <!-- Class Time -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Class Time"
-            android:textSize="16sp" />
+            android:text="Time" />
 
         <EditText
             android:id="@+id/editClassTime"
@@ -55,21 +49,18 @@
             android:hint="e.g., Mon, Wed 9:30–10:45 AM"
             android:layout_marginBottom="16dp" />
 
-        <!-- Class Location -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:textSize="16sp" />
+            android:text="Location" />
 
         <EditText
             android:id="@+id/editClassLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g., Digital Computer Lab, Rm. 1320"
+            android:hint="e.g., Siebel Center, Rm. 1404"
             android:layout_marginBottom="24dp" />
 
-        <!-- Buttons row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,5 +83,4 @@
 
     </LinearLayout>
 </ScrollView>
-
 

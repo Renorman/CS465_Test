@@ -12,10 +12,18 @@ import java.util.ArrayList;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
 
-    ArrayList<ClassItem> list;
+    // Listener for both tap (edit) and long-press (delete)
+    public interface OnItemInteractionListener {
+        void onItemClick(int position);
+        void onItemLongClick(int position);
+    }
 
-    public ScheduleAdapter(ArrayList<ClassItem> list) {
-        this.list = list;
+    private final ArrayList<ClassItem> classList;
+    private final OnItemInteractionListener listener;
+
+    public ScheduleAdapter(ArrayList<ClassItem> classList, OnItemInteractionListener listener) {
+        this.classList = classList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -28,14 +36,31 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ViewHolder holder, int position) {
-        ClassItem item = list.get(position);
+        ClassItem item = classList.get(position);
         holder.title.setText(item.title);
         holder.time.setText(item.time);
         holder.location.setText(item.location);
+
+        // Tap → edit
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(holder.getAdapterPosition());
+            }
+        });
+
+        // Long press → delete
+        holder.itemView.setOnLongClickListener(v -> {
+            if (listener != null) {
+                listener.onItemLongClick(holder.getAdapterPosition());
+            }
+            return true; // consume the long-press
+        });
     }
 
     @Override
-    public int getItemCount() { return list.size(); }
+    public int getItemCount() {
+        return classList.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title, time, location;
@@ -48,4 +73,3 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         }
     }
 }
-
