@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ImageView menuButton, profileButton;
-    private TextView mapButton;
+    private ImageView mapButton;
 
     private RoomsViewModel roomsViewModel;
     private Room currentRoom;
@@ -201,7 +201,7 @@ public class HomeActivity extends AppCompatActivity {
         buildingLabel.setText(currentRoom.building);
 
         View root = findViewById(R.id.drawerLayout);
-        int newColor = getBackgroundColorForTemp(currentRoom.currentTemp);
+        int newColor = getBackgroundColorForTemp((int) currentRoom.currentTemp);
 
         // Background animation??
         int oldColor = ((ColorDrawable) root.getBackground()).getColor();

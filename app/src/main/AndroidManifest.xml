@@ -17,50 +17,34 @@
             android:value="@string/map_api_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:exported="true"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />  <!-- Changed from Maps -->
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MapsActivity"
+            android:exported="true"
+            android:label="@string/title_activity_maps" />
 
         <activity
             android:name=".ProfileActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-
+            android:exported="true" />
 
         <activity
             android:name=".ScheduleActivity"
-            android:exported="true" /> <!-- ADDED -->
-
+            android:exported="true" />
 
         <activity
             android:name=".AddClassActivity"
-            android:exported="true" /> <!-- ADDED -->
+            android:exported="true" />
 
     </application>
 </manifest>
-
