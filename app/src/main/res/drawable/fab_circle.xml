@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Background color of the FAB -->
+    <solid android:color="#6A5ACD" /> <!-- Purple accent -->
+
+    <!-- Optional: shadow/elevation simulation -->
+    <padding
+        android:left="4dp"
+        android:top="4dp"
+        android:right="4dp"
+        android:bottom="4dp" />
+
+    <!-- Optional: tweak size if needed -->
+    <size
+        android:width="65dp"
+        android:height="65dp" />
+
+</shape>
