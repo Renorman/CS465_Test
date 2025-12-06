@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F3FF"
     android:padding="20dp">
 
     <LinearLayout
@@ -9,89 +10,210 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Back Button -->
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_back" />
-
-        <!-- Title -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp" />
-
-        <!-- ICON ROW -->
+        <!-- Top bar: back + title -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:weightSum="4">
+            android:gravity="center_vertical">
 
-            <!-- Places -->
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="#333"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#222222"
+                android:layout_marginStart="12dp"/>
+        </LinearLayout>
+
+        <!-- Header card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_card"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_marginTop="24dp"
+            android:elevation="4dp">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_profile_avatar"
+                android:background="@drawable/fab_circle"
+                android:scaleType="centerInside"
+                android:tint="#FFFFFF"/>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome back,"
+                    android:textColor="#666666"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User"
+                    android:textColor="#222222"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="19 locations visited so far"
+                    android:textColor="#888888"
+                    android:textSize="13sp"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Section label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quick actions"
+            android:textColor="#555555"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Row of action cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="12dp">
+
+            <!-- Places card -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_card"
+                android:padding="16dp"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="8dp">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_places" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_places"
+                    android:tint="#FF7043"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Places"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View saved spots"
+                    android:textSize="12sp"
+                    android:textColor="#888888"/>
             </LinearLayout>
 
-            <!-- Schedule -->
+            <!-- Schedule card (clickable) -->
             <LinearLayout
+                android:id="@+id/scheduleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/rounded_card"
+                android:padding="16dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_schedule" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_schedule"
+                    android:tint="#66BB6A"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Schedule"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manage classes"
+                    android:textSize="12sp"
+                    android:textColor="#888888"/>
             </LinearLayout>
+        </LinearLayout>
+
+        <!-- Second row: Notifications & Settings -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <!-- Notifications -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/rounded_card"
+                android:padding="16dp"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="8dp">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_notifications" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_notifications"
+                    android:tint="#42A5F5"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Notifications"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alerts and updates"
+                    android:textSize="12sp"
+                    android:textColor="#888888"/>
             </LinearLayout>
 
             <!-- Settings -->
@@ -99,64 +221,33 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/rounded_card"
+                android:padding="16dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="8dp">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_settings" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_settings"
+                    android:tint="#7E57C2"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Settings"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- USER CARD -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/profile_card_bg"
-            android:padding="20dp"
-            android:layout_marginTop="30dp">
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_profile_avatar" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="15dp">
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="19 locations visited"
-                    android:textSize="14sp" />
+                    android:text="Account and app"
+                    android:textSize="12sp"
+                    android:textColor="#888888"/>
             </LinearLayout>
-
-            <!-- Edit Arrow -->
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_arrow_right" />
-
         </LinearLayout>
 
     </LinearLayout>
