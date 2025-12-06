@@ -14,32 +14,101 @@
         tools:context=".MapsActivity"
         />
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="5"
-        android:rowCount="10">
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
 
         <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-
-
-            android:layout_row="1"
-            android:layout_column="0"
-
             android:id="@+id/MapstoBack"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_width="60dp"
 
+
+            android:layout_height="60dp"
+            android:layout_gravity="top|left"
             android:adjustViewBounds="true"
+
             android:backgroundTint="#00FFFFFF"
+            android:clickable="true"
             android:contentDescription="Back Button"
+            android:focusable="true"
             android:scaleType="centerCrop"
             android:src="@drawable/left_arrow" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:orientation="vertical"
 
-    </GridLayout>
+            android:background="@drawable/box2"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+
+
+                android:layout_height="82dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="#00FFFFFF"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cold_reaction" />
+
+                <SeekBar
+                    android:id="@+id/calibrateBar"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="265dp"
+
+                    android:layout_height="68dp"
+
+
+                    android:clickable="true"
+
+
+                    android:focusable="true"
+                    android:max="11"
+                    android:min="-1"
+                    android:progress="6"
+                    android:thumb="@drawable/neutral_thumb" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:backgroundTint="#00FFFFFF"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hot_reaction" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tempText"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/roboto_bold"
+                android:paddingBottom="10dp"
+                android:text="X Degrees"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 
 </FrameLayout>

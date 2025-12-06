@@ -5,7 +5,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,9 +42,15 @@ import java.util.List;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    // variables
+    // GoogleMap-based variables
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+
+    // Slider-based variables
+    private int defaultTemp;
+    private SeekBar calibrateTempBar;
+    private TextView tempBarText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +64,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // Set up slider
+        calibrateTempBar = findViewById(R.id.calibrateBar);
+        tempBarText = findViewById(R.id.tempText);
 
+        tempBarText.setText(""+(calibrateTempBar.getProgress() * 10) + " Degrees");
+
+        defaultTemp = calibrateTempBar.getProgress() * 10;
+
+        // Back-to-home button
         ImageButton backButton = (ImageButton) findViewById(R.id.MapstoBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +81,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(switchIntent);
             }
         });
+
+        // Calls pop-up text explanation for slider
+        showDialog();
+    }
+
+    // Set up dialog box for the slider calibration explanation
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Calibration");
+        builder.setMessage("Use the SLIDER in the upper-right corner to adjust your preferred temperature!");
+        builder.setIcon(R.drawable.neutral_reaction);
+
+        builder.setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     /**
@@ -83,10 +121,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Establish all existing locations & markers
         List<Map<LatLng, String>> graingerRooms = getGraingerRooms();
-        List<List<Marker>> graingerMarkers = makeMarkers(graingerRooms, 70);
+        List<List<Marker>> graingerMarkers = makeMarkers(graingerRooms);
 
 
         //Set Listener Events
+        calibrateTempBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tempBarText.setText(""+ (progress * 10) + " Degrees");
+
+                defaultTemp = progress * 10;
+                calibrateTemp(graingerMarkers);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         // Indoor-based listening events
         mMap.setOnIndoorStateChangeListener(new GoogleMap.OnIndoorStateChangeListener() {
@@ -125,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     // Returns a List of lists for all Markers organized by each floor of the building
-    public List<List<Marker>> makeMarkers(List<Map<LatLng, String>> allFloors, int defaultTemp) {
+    public List<List<Marker>> makeMarkers(List<Map<LatLng, String>> allFloors) {
         // Final list to be returned
         List<List<Marker>> allMarkers = new ArrayList<>();
 
@@ -150,13 +207,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 currMarker.setVisible(false); // hide on initialization
 
                 // Set icon image based on room's randomly generated temperature
-                if (randomTemp > (defaultTemp + 10)) {
-                    currMarker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.hot_reaction)));
-                } else if (randomTemp < (defaultTemp - 10)) {
-                    currMarker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.cold_reaction)));
-                } else {
-                    currMarker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.neutral_reaction)));
-                }
+                updateIcon(currMarker, randomTemp);
 
                 floorMarkers.add(currMarker);
             }
@@ -165,6 +216,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return allMarkers;
     }
 
+
+    // Updates all markers to reflect new defaultTemp
+    public void calibrateTemp(List<List<Marker>> allFloors) {
+        Log.d("PROGRESS", "running...");
+        // Iterate through each map/floor in the list of all floors
+        for (List<Marker> floor : allFloors) {
+            for (Marker room : floor) {
+                updateIcon(room, (int) room.getTag());
+            }
+        }
+    }
+
+    // Compares marker's temperature to passed in temperature, updates icon accordingly
+    public void updateIcon(Marker marker, int markerTemp) {
+        if (markerTemp > (defaultTemp + 10)) {
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.hot_reaction)));
+        } else if (markerTemp < (defaultTemp - 10)) {
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.cold_reaction)));
+        } else {
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitMap(R.drawable.neutral_reaction)));
+        }
+
+    }
 
     // Goes through Marker List and sets all to not visible
     public void hideMarkers(List<Marker> markers) {
