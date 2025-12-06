@@ -26,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
         // -----------------------------
         // SCHEDULE ICON → go to schedule screen
         // -----------------------------
-        LinearLayout scheduleSection = findViewById(R.id.scheduleSection);
+        LinearLayout scheduleSection = findViewById(R.id.scheduleButton);
         // IMPORTANT: Your XML must have android:id="@+id/scheduleSection"
 
         scheduleSection.setOnClickListener(v -> {
