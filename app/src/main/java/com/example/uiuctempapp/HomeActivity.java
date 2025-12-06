@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.view.GravityCompat;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,13 +35,13 @@ public class HomeActivity extends AppCompatActivity {
     private RoomsViewModel roomsViewModel;
     private Room currentRoom;
 
-    // Voting
+    // Voting UI
     private SeekBar tempSlider;
     private TextView sliderValue;
     private Button submitVote;
-    private final int baseTemp = 50; // slider minimum for now, can change
+    private final int baseTemp = 50;
 
-    // Search
+    // Search UI
     private EditText searchBar;
     private ListView searchResults;
     private ArrayAdapter<String> searchAdapter;
@@ -58,13 +60,12 @@ public class HomeActivity extends AppCompatActivity {
 
         LinearLayout locationsContainer = findViewById(R.id.locationsContainer);
 
-
         roomsViewModel = new ViewModelProvider(this).get(RoomsViewModel.class);
-        currentRoom = roomsViewModel.getRoom("room_1");
+        currentRoom = roomsViewModel.getRoom("room_1"); // default
 
         updateUI();
 
-        // Favorites
+        // Favorites Drawer
         roomsViewModel.getFavorites().observe(this, favorites -> {
             locationsContainer.removeAllViews();
 
@@ -86,23 +87,20 @@ public class HomeActivity extends AppCompatActivity {
                 locationsContainer.addView(item);
             }
         });
-        //
 
         menuButton.setOnClickListener(v ->
                 drawerLayout.openDrawer(GravityCompat.START)
         );
 
         mapButton.setOnClickListener(v -> {
-            Intent mapIntent = new Intent(HomeActivity.this, MapsActivity.class);
-            startActivity(mapIntent);
+            startActivity(new Intent(HomeActivity.this, MapsActivity.class));
         });
 
         profileButton.setOnClickListener(v -> {
-            Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
-            startActivity(profileIntent);
+            startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
         });
 
-        // Back button eow
+        // Back Button
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -128,8 +126,8 @@ public class HomeActivity extends AppCompatActivity {
                 sliderValue.setText("Selected: " + (baseTemp + progress) + "°");
             }
 
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStartTrackingTouch(SeekBar s) {}
+            @Override public void onStopTrackingTouch(SeekBar s) {}
         });
 
         submitVote.setOnClickListener(v -> {
@@ -138,20 +136,15 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         // Search bar
-        searchAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                new ArrayList<>()
-        );
-
+        searchAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         searchResults.setAdapter(searchAdapter);
 
         searchBar.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void beforeTextChanged(CharSequence c, int s, int c2, int a) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim().toLowerCase();
+            public void onTextChanged(CharSequence c, int s, int b, int c2) {
+                String query = c.toString().trim().toLowerCase();
 
                 if (query.isEmpty()) {
                     searchResults.setVisibility(View.GONE);
@@ -177,11 +170,11 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
-            @Override public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable e) {}
         });
 
-        searchResults.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedName = searchAdapter.getItem(position);
+        searchResults.setOnItemClickListener((parent, view, pos, id) -> {
+            String selectedName = searchAdapter.getItem(pos);
 
             for (Room r : roomsViewModel.getRooms().getValue()) {
                 if (r.name.equals(selectedName)) {
@@ -206,14 +199,32 @@ public class HomeActivity extends AppCompatActivity {
         tempText.setText(currentRoom.currentTemp + "°");
         roomLabel.setText(currentRoom.name);
         buildingLabel.setText(currentRoom.building);
+
+        View root = findViewById(R.id.drawerLayout);
+        int newColor = getBackgroundColorForTemp(currentRoom.currentTemp);
+
+        // Background animation??
+        int oldColor = ((ColorDrawable) root.getBackground()).getColor();
+        ValueAnimator animator = ValueAnimator.ofArgb(oldColor, newColor);
+        animator.setDuration(600);
+        animator.addUpdateListener(a -> root.setBackgroundColor((int) a.getAnimatedValue()));
+        animator.start();
     }
 
-    // Slider voting logic
+    // Background color
+    private int getBackgroundColorForTemp(int temp) {
+        if (temp <= 55) return 0xFF0D47A1; // dark blue
+        if (temp <= 65) return 0xFF1976D2; // medium blue
+        if (temp <= 75) return 0xFF43A047; // green
+        if (temp <= 85) return 0xFFFDD835; // yellow
+        return 0xFFE53935;                // red
+    }
+
+    // Submit vote
     private void submitVoteValue(int temperature) {
         if (currentRoom == null) return;
 
         roomsViewModel.updateTemperature(currentRoom.id, temperature);
-
         currentRoom = roomsViewModel.getRoom(currentRoom.id);
         updateUI();
 
