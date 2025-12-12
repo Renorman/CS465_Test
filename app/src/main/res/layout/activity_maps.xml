@@ -1,83 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MapsActivity"
-        />
+        android:layout_height="match_parent" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:orientation="horizontal">
-
+        android:layout_height="match_parent">
 
         <ImageButton
             android:id="@+id/MapstoBack"
             android:layout_width="60dp"
-
-
             android:layout_height="60dp"
-            android:layout_gravity="top|left"
-            android:adjustViewBounds="true"
-
+            android:layout_margin="16dp"
+            android:layout_gravity="top|start"
             android:backgroundTint="#00FFFFFF"
             android:clickable="true"
-            android:contentDescription="Back Button"
             android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/left_arrow" />
+            android:src="@drawable/left_arrow"
+            android:elevation="50dp"
+            android:translationZ="50dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
             android:orientation="vertical"
-
+            android:layout_margin="16dp"
+            android:layout_gravity="top|end"
             android:background="@drawable/box2"
-            >
+            android:padding="8dp"
+            android:elevation="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-
-
-                android:layout_height="82dp"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
-
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
-
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:backgroundTint="#00FFFFFF"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/cold_reaction" />
+                    android:src="@drawable/cold_reaction"
+                    android:backgroundTint="#00FFFFFF" />
 
                 <SeekBar
                     android:id="@+id/calibrateBar"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:layout_width="265dp"
-
-                    android:layout_height="68dp"
-
-
-                    android:clickable="true"
-
-
-                    android:focusable="true"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
                     android:max="11"
                     android:min="-1"
                     android:progress="6"
@@ -86,33 +60,23 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:backgroundTint="#00FFFFFF"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/hot_reaction" />
+                    android:src="@drawable/hot_reaction"
+                    android:backgroundTint="#00FFFFFF" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tempText"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-
-                android:fontFamily="@font/roboto_bold"
-                android:paddingBottom="10dp"
                 android:text="X Degrees"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:fontFamily="@font/roboto_bold" />
 
         </LinearLayout>
-    </LinearLayout>
 
+    </FrameLayout>
 
 </FrameLayout>
-
-
-
-

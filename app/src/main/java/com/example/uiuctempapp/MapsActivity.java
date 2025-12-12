@@ -41,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.widget.Toast;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     // variables
     // GoogleMap-based variables
@@ -73,13 +75,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         defaultTemp = calibrateTempBar.getProgress() * 10;
 
         // Back-to-home button
-        ImageButton backButton = (ImageButton) findViewById(R.id.MapstoBack);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent switchIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(switchIntent);
-            }
+        ImageButton backButton = findViewById(R.id.MapstoBack);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MapsActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         // Calls pop-up text explanation for slider
